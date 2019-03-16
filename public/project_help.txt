@@ -1,0 +1,5 @@
+//for datatable row click event  
+ $('#datatable tbody').off('click');
+    $('#datatable tbody').on('click', 'tr', function () { 
+         
+    }); 
