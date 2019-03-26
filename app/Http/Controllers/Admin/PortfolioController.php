@@ -32,6 +32,15 @@ class PortfolioController extends Controller
     {
         return Portfolio::orderBy('created_at', 'DESC')->get();
     }
+    /**
+     * Display a listing of the resource.
+     *
+     * @return back to the user
+     */
+    public function create()
+    {
+        return redirect()->route('portfolios.index');
+    }
 
     /**
      * Store a newly created resource in storage.

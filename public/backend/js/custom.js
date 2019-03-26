@@ -154,7 +154,10 @@ $(document).ready(function () {
   };
 
   rangeSlider();
-});
+}); // for custom nav
+
+$('.is-active > .list-unstyled').css('display', 'block !important');
+$('.is-active .waves-effect.active').addClass('subdrop');
 
 /***/ }),
 

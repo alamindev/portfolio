@@ -28,7 +28,7 @@
                     @csrf
 
                     @php
-                            echo Help_all_input_normal('email','email','email','','','write email for login','Email Address','true','true','on','','','','','4');
+                            echo Help_all_input_normal('email','email','email','','','write email for login','Email Address','true','true','on','','','','','');
                     @endphp
 
                     <div class="form-group row text-center m-t-20 mb-0">

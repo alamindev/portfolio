@@ -16,13 +16,15 @@
     <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Chewy" rel="stylesheet">
     <!-- Styles -->
-    <link href="{{ asset('frontend/css/app.css') }}" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('uploads/generals/'.$general->fav_icon) }}">
+    <link href="{{ asset('frontend/css/app.css') }}" rel="stylesheet"> 
+        @if(!empty($general->fav_icon))
+              <link rel="shortcut icon" href="{{ asset('uploads/generals/'.$general->fav_icon) }}">
+          @endif
 </head>
 <body>
     <div id="app"> 
          <vue-progress-bar></vue-progress-bar>
-        <app-default></app-default>
+         <app-default></app-default>
     </div>
         <!-- Scripts -->
     <script src="{{ asset('frontend/js/app.js') }}" defer></script>

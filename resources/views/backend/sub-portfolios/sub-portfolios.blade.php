@@ -14,8 +14,8 @@ All portfolio
         <div class="card">
             <div class="card-header d-md-flex d-sm-block justify-content-between text-center align-items-center">
                 <h4 class="text-capitalize m-0"><i class="fas fa-chess-board"></i> All Portfolio  List</h4>
-                @permission("create-portfolios")
-                <a href="{{ route('portfolios.create') }}" class="btn btn-outline-success waves-effect waves-light"> <i class="fas fa-plus"></i> Add New Portfolio</a>
+                @permission("create-subportfolios")
+                <a href="{{ route('sub_portfolios.create') }}" class="btn btn-outline-success waves-effect waves-light"> <i class="fas fa-plus"></i> Add New Portfolio</a>
                 @endpermission
             </div>
             <div class="card-body">
@@ -23,9 +23,9 @@ All portfolio
                     <thead>
                         <tr>
                             <th>SL</th>
+                            <th>Portfolio Category</th>
                             <th>Portfolio Name</th>
-                            <th>Portfolio Link</th>  
-                            <th>Portfolio Details</th>  
+                            <th>Portfolio Link</th>   
                             <th>Created Date</th>
                             <th>Manage</th>
                         </tr>
@@ -54,9 +54,9 @@ $(document).ready(function () {
         ajax: '{{ route('getPortfolioData') }}',
         columns: [
             {data: 'id', name: 'id'}, 
-            {data: 'port_name', name: 'port_name'},
-            {data: 'port_link', name: 'port_link'}, 
-            {data: 'port_details', name: 'port_details'}, 
+            {data: 'Portfolio Main', name: 'Portfolio Main'},
+            {data: 'sub_port_name', name: 'sub_port_name'},
+            {data: 'Portfolio Link', name: 'Portfolio Link'},  
             {data: 'created_at', name: 'created_at'},
             {data: 'manage', name: 'manage'},
         ]

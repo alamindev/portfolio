@@ -7,8 +7,8 @@ View portfolio Information Details
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body d-md-flex d-sm-block justify-content-between text-center bg-success text-light align-items-center">
-                <h4 class="text-capitalize m-0"><i class="fas fa-star-of-david"></i> View {{ $show->port_name }} Information</h4>
-                <a href="{{ route('portfolios.index') }}" class="btn btn-outline-light waves-effect waves-light"> <i class="fas fa-caret-left"></i> Back</a>
+                <h4 class="text-capitalize m-0 text-light"><i class="fas fa-star-of-david text-light"></i> View {{ $show->sub_port_name }} Information</h4>
+                <a href="{{ route('sub_portfolios.index') }}" class="btn btn-outline-light waves-effect waves-light"> <i class="fas fa-caret-left"></i> Back</a>
             </div>
         </div>
     </div>
@@ -24,24 +24,29 @@ View portfolio Information Details
                         <td>{{ $show->id }}</td>
                     </tr>
                     <tr>
+                        <td>Portfolio Category</td>
+                        <td>:</td>
+                        <td>{{ $show->Portfolios->portfolio_name }}</td>
+                    </tr>
+                    <tr>
                         <td>Portfolio Name</td>
                         <td>:</td>
-                        <td>{{ $show->port_name }}</td>
+                        <td>{{ $show->sub_port_name }}</td>
                     </tr>
                     <tr>
                         <td>Portfolio Link</td>
                         <td>:</td>
-                        <td>{{ $show->port_link }}</td>
+                        <td>{{ $show->sub_port_link }}</td>
                     </tr>
                     <tr>
                         <td>Portfolio Details</td>
                         <td>:</td>
-                        <td>{{ $show->port_details }}</td>
+                        <td>{!! $show->sub_port_details !!}</td>
                     </tr> 
                 </table>
             </div>
-            <div class="card-header">
-                <a href="{{ route('portfolios.edit',$show->id) }}" class="btn btn-outline-primary waves-effect waves-light">Update your profile</a>
+            <div class="card-footer">
+                <a href="{{ route('sub_portfolios.edit',$show->id) }}" class="btn btn-outline-primary waves-effect waves-light">Update your profile</a>
             </div>
         </div>
     </div>
@@ -51,7 +56,7 @@ View portfolio Information Details
                 portfolio Photo
             </div>
             <div class="card-body">
-                <img src="{{ asset('uploads/portfolio/'.$show->port_photo ) }}" alt="photo" class="img-fluid">
+                <img src="{{ asset('uploads/portfolio/'.$show->sub_port_photo ) }}" alt="photo" class="img-fluid">
             </div>
         </div> 
     </div>

@@ -70,8 +70,8 @@ Route::group(['prefix' => 'admin'], function () {
     /*
       routes for porfolio
     */
-    Route::get('/sub-portfolios', 'Admin\PortfolioController@index')->name('sub_portfolios.index');
-    Route::get('/sub-portfolios/create', 'Admin\PortfolioController@create')->name('sub_portfolios.create');
+    Route::get('/sub-portfolios', 'Admin\SubPortfolioController@index')->name('sub_portfolios.index');
+    Route::get('/sub-portfolios/create', 'Admin\SubPortfolioController@create')->name('sub_portfolios.create');
     Route::POST('/sub-portfolios/store', 'Admin\SubPortfolioController@store')->name('sub_portfolios.store');
     Route::get('/sub-portfolios/getdata', 'Admin\SubPortfolioController@getPortfolioData')->name('getPortfolioData');
     Route::get('/sub-portfolios/show/{id}', 'Admin\SubPortfolioController@show')->name('sub_portfolios.show');

@@ -7,8 +7,10 @@ Portfolio Category Information
     <div class="col-lg-12">
         <div class="card">
           <div class="card-body p-2 d-md-flex d-sm-block justify-content-between align-items-center text-center">
-            <h4 class="text-capitalize m-0"><i class="fas fa-first-aid"></i>portfolio Category Information</h4> 
+            <h4 class="text-capitalize m-0"><i class="fas fa-first-aid"></i> Portfolio Category Information</h4> 
+              @permission('create-portfolios')
                     <button type="button" @click="ModalShow" class="btn btn-outline-success waves-effect waves-light"><i class="fa fa-plus"></i> &nbsp; add</span></button>
+              @endpermission
             </div>
         </div>
     </div>
@@ -36,9 +38,14 @@ Portfolio Category Information
                     <td v-if="!showform(category.id)" v-cloak>@{{ category.portfolio_name }}</td>
                     <td  v-if="showform(category.id)" v-cloak><input type="text" class="form-control" v-model="category.portfolio_name" v-cloak></td>
                     <td> 
+                @permission('update-portfolios')
                 <button v-if="!showform(category.id)" @click="editing(category.id)" class="btn btn-twitter waves-effect waves-light btn-sm"><i class="fa fa-edit"></i></button>      
+                @endpermission
+                 @permission('delete-portfolios')
                 <button v-if="!showform(category.id)" @click="deleted(category.id)" class="btn btn-dropbox waves-effect waves-light btn-sm"><i class="fa fa-trash"></i></button>    
+                @endpermission
                 <button type="submit" v-if="showform(category.id)" @click="updateData(category.id)" class="btn btn-tumblr waves-effect waves-light btn-sm">Save</button>
+
                 <button v-if="showform(category.id)" @click="cancel(category.id)" class="btn btn-flickr waves-effect waves-light btn-sm">cancel</button>
              </td>
           </tr>

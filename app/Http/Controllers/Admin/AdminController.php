@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function __construct()
     {
         $this->middleware('auth:admin');
-        $this->user_permission =  get_permission_value('permissions');
+        $this->user_permission =  get_permission_value('admins');
     }
 
     /**

@@ -8,10 +8,12 @@ use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 use DB;
 
-class PermissionController extends Controller {  
+class PermissionController extends Controller
+{
     public $user_permission;
-    public function __construct() {
-        $this->middleware('auth:admin');  
+    public function __construct()
+    {
+        $this->middleware('auth:admin');
         $this->user_permission =  get_permission_value('permissions');
     }
 
@@ -20,37 +22,39 @@ class PermissionController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {    
-        if(auth()->user()->can(!empty($this->user_permission[2]))  && auth()->user()->hasRole('developer') ){
-            return view('backend.auth.permissions.permissions'); 
-         }else{
+    public function index()
+    {
+        if (auth()->user()->can(!empty($this->user_permission[2]))  && auth()->user()->hasRole('developer')) {
+            return view('backend.auth.permissions.permissions');
+        } else {
             return redirect()->back();
         }
-      
     }
     /*
     * for get and show when login from developer account
     *
     */
-    public function getPermissionByFilter(){
+    public function getPermissionByFilter()
+    {
         $permission_all = [] ;
-        $data  = Permission::latest()->get(); 
-        foreach($data as $value){ 
-            $explode_value =  explode('-',$value['name']); 
-            if(auth()->user()->hasRole('developer')){
+        $data  = Permission::latest()->get();
+        foreach ($data as $value) {
+            $explode_value =  explode('-', $value['name']);
+            if (auth()->user()->hasRole('developer')) {
                 $permission_all[] = $value;
-            }else{
-             if($explode_value[1] !== 'permissions'){
+            } else {
+                if ($explode_value[1] !== 'permissions') {
                     $permission_all[] = $value;
-               } 
-            } 
-        } 
+                }
+            }
+        }
         return $permission_all;
     }
     /*
     * coding for data table value
-    */ 
-    public function getPermissionData() { 
+    */
+    public function getPermissionData()
+    {
         $data  = $this->getPermissionByFilter();
         return DataTables::of($data)
                         ->addIndexColumn()
@@ -59,7 +63,7 @@ class PermissionController extends Controller {
                         })
                         ->setRowId(function ($permission) {
                             return $permission->id;
-                        }) 
+                        })
                         // ->setRowAttr(['align'=>'center'])
                         ->addColumn('manage', '
             <?php 
@@ -96,14 +100,14 @@ class PermissionController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        if(auth()->user()->can(!empty($this->user_permission[0]))  && auth()->user()->hasRole('developer')  ){
+    public function create()
+    {
+        if (auth()->user()->can(!empty($this->user_permission[0]))  && auth()->user()->hasRole('developer')) {
             $tables = DB::select('SHOW TABLES');
             return view('backend.auth.permissions.add-permission', compact('tables'));
-        }else{
+        } else {
             return redirect()->back();
         }
-       
     }
 
     /**
@@ -112,8 +116,9 @@ class PermissionController extends Controller {
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) {
-        if(auth()->user()->can(!empty($this->user_permission[0]))  && auth()->user()->hasRole('developer')  ){
+    public function store(Request $request)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[0]))  && auth()->user()->hasRole('developer')) {
             $permissions = Permission::get();
 
             foreach ($permissions as $permission) {
@@ -139,7 +144,9 @@ class PermissionController extends Controller {
                 $permission->save();
     
                 toast(
-                        'Successfully created the new ' . $permission->display_name . ' permission in the database!', 'success', 'top-right'
+                    'Successfully created the new ' . $permission->display_name . ' permission in the database!',
+                    'success',
+                    'top-right'
                 )->autoClose(5000);
                 return redirect()->route('permissions.index');
             } elseif ($request->permission_type == 'crud') {
@@ -168,7 +175,9 @@ class PermissionController extends Controller {
                             $permission->save();
                         }
                         toast(
-                                'Successfully created the new ' . $permission->display_name . ' permission in the database!', 'success', 'top-right'
+                            'Successfully created the new ' . $permission->display_name . ' permission in the database!',
+                            'success',
+                            'top-right'
                         )->autoClose(5000);
                         return redirect()->route('permissions.index');
                     }
@@ -176,9 +185,9 @@ class PermissionController extends Controller {
             } else {
                 return redirect()->route('permissions.create')->withInput();
             }
-        }else{
+        } else {
             return redirect()->back();
-        } 
+        }
     }
 
     /**
@@ -187,11 +196,12 @@ class PermissionController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        if(auth()->user()->can(!empty($this->user_permission[3]))  && auth()->user()->hasRole('developer') ){
+    public function show($id)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[3]))  && auth()->user()->hasRole('developer')) {
             $show = Permission::find($id);
-            return view('backend.auth.permissions.view-permission',compact('show'));
-        }else{
+            return view('backend.auth.permissions.view-permission', compact('show'));
+        } else {
             return redirect()->back();
         }
     }
@@ -202,12 +212,13 @@ class PermissionController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) { 
-        if(auth()->user()->can(!empty($this->user_permission[4])) && auth()->user()->hasRole('developer') ){
+    public function edit($id)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[4])) && auth()->user()->hasRole('developer')) {
             $edit = Permission::find($id);
             $tables = DB::select('SHOW TABLES');
             return view('backend.auth.permissions.edit-permission', compact('edit', 'tables'));
-        }else{
+        } else {
             return redirect()->back();
         }
     }
@@ -219,8 +230,9 @@ class PermissionController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        if(auth()->user()->can(!empty($this->user_permission[1])) && auth()->user()->hasRole('developer') ){
+    public function update(Request $request, $id)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[1])) && auth()->user()->hasRole('developer')) {
             $this->validateWith([
                 'display_name' => 'required|max:255',
                 'description' => 'sometimes|max:255'
@@ -231,12 +243,14 @@ class PermissionController extends Controller {
             $permission->save();
     
             toast(
-                    'Successfully Updated the new ' . $permission->display_name . ' permission in the database!', 'success', 'top-right'
+                'Successfully Updated the new ' . $permission->display_name . ' permission in the database!',
+                'success',
+                'top-right'
             )->autoClose(5000);
             return redirect()->route('permissions.show', $id);
-        }else{
+        } else {
             return redirect()->back();
-        } 
+        }
     }
 
     /**
@@ -245,11 +259,11 @@ class PermissionController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {  
+    public function destroy($id)
+    {
         $permission = Permission::find($id);
-            if($permission){ 
+        if ($permission) {
             $permission->delete();
-        }   
+        }
     }
-
 }

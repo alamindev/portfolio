@@ -24,13 +24,13 @@
                         <input type="hidden" name="token" value="{{ $token }}">
 
                     @php
-                            echo Help_all_input_normal('email','email','email','','','write email for login','Email Address','true','true','on','','','','','4');
+                            echo Help_all_input_normal('email','email','email','','','write email for login','Email Address','true','true','on','','','','','');
                     @endphp
                     @php
-                            echo Help_all_input_normal('password','password','password','','','Write Your New Password','New Password','true','true','on','','','','','6');
+                            echo Help_all_input_normal('password','password','password','','','Write Your New Password','New Password','true','true','on','','','','','');
                     @endphp
                     @php
-                            echo Help_all_input_normal('password-confirm','password','password_confirmation','','','Write Your New Password','Confirmation  Password','true','true','on','','','','','6');
+                            echo Help_all_input_normal('password-confirm','password','password_confirmation','','','Write Your New Password','Confirmation  Password','true','true','on','','','','','');
                     @endphp
 
                     <div class="form-group row text-center m-t-20 mb-0">

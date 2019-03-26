@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\DataTables;
 use App\Model\Admin\Permission;
-use DB; 
+use DB;
 
-class RoleController extends Controller {
+class RoleController extends Controller
+{
     public $user_permission;
-    public function __construct() {
+    public function __construct()
+    {
         $this->middleware('auth:admin');
         $this->user_permission =  get_permission_value('roles');
     }
@@ -21,32 +23,35 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function index() {  
-        if(auth()->user()->can(!empty($this->user_permission[2]))){
+    public function index()
+    {
+        if (auth()->user()->can(!empty($this->user_permission[2]))) {
             return view('backend.auth.roles.roles');
-        }else{
+        } else {
             return redirect()->back();
         }
     }
- /*
-    * for get and show when login from developer account
-    *
-    */
-    public function getRoleByFilter(){
+    /*
+       * for get and show when login from developer account
+       *
+       */
+    public function getRoleByFilter()
+    {
         $role_all = [] ;
-        $data  = Role::latest()->get(); 
-        foreach($data as $value){  
-            if(auth()->user()->hasRole('developer')){
+        $data  = Role::latest()->get();
+        foreach ($data as $value) {
+            if (auth()->user()->hasRole('developer')) {
                 $role_all[] = $value;
-            }else{
-             if($value['name'] !== 'developer'){
+            } else {
+                if ($value['name'] !== 'developer') {
                     $role_all[] = $value;
-               } 
-            } 
-        } 
-        return $role_all; 
+                }
+            }
+        }
+        return $role_all;
     }
-    public function getRoleData() {
+    public function getRoleData()
+    {
         $data  = $this->getRoleByFilter();
         return DataTables::of($data)
                         ->setRowClass(function ($role) {
@@ -57,19 +62,28 @@ class RoleController extends Controller {
                         })
                         // ->setRowAttr(['align'=>'center'])
                         ->addColumn('manage', '
-            <?php
-                if(true){
-                ?>
-<a href="<?php echo route("roles.show",$id);?>" class="btn btn-outline-purple waves-effect waves-info"><i
-    class="fas fa-eye"></i></a>
-<?php
-                }
-                ?>
-<a href="<?php echo route("roles.edit",$id);?>" class="btn btn-outline-success waves-effect waves-light"><i
-    class="fas fa-edit"></i></a>
+                     <?php 
+                        $permission = get_permission_value("roles"); 
+                        if(auth()->user()->can("$permission[3]")){
+                    ?>
+                        <a href="<?php echo route("roles.show",$id);?>" class="btn btn-outline-purple waves-effect waves-info"><i
+                            class="fas fa-eye"></i></a>
+                      <?php
+                            }
+                            if(auth()->user()->can("$permission[4]")){
+                        ?> 
+                    <a href="<?php echo route("roles.edit",$id);?>" class="btn btn-outline-success waves-effect waves-light"><i
+                        class="fas fa-edit"></i></a>
+                         <?php
+            }
+            if(auth()->user()->can("$permission[1]")){
+         ?>
     <button id="delete"  type="button" class="btn btn-outline-danger waves-effect waves-light"
     data-remote="<?php echo route("roles.destroy",$id);?>"><i
        class="fas fa-trash"></i></button>
+         <?php
+            }
+        ?>
 ')
                         ->rawColumns(['manage'])
                         ->editColumn('created_at', function (Role $role) {
@@ -83,16 +97,17 @@ class RoleController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    public function create() {
-        if(auth()->user()->can(!empty($this->user_permission[0]))){
+    public function create()
+    {
+        if (auth()->user()->can(!empty($this->user_permission[0]))) {
             $permissions = Permission::all();
             $view_tables = DB::table('view_tables')->get();
             $tables = DB::select('SHOW TABLES');
-            return view('backend.auth.roles.add-role',compact('permissions','view_tables','tables')); 
-        }else{
+            return view('backend.auth.roles.add-role', compact('permissions', 'view_tables', 'tables'));
+        } else {
             return redirect()->back();
-        } 
-      }
+        }
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -100,28 +115,29 @@ class RoleController extends Controller {
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request) { 
-        if(auth()->user()->can(!empty($this->user_permission[0]))){
+    public function store(Request $request)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[0]))) {
             $this->validateWith([
                 'display_name' => 'required|max:255',
                 'name' => 'required|max:100|alpha_dash|unique:roles',
                 'description' => 'sometimes|max:255'
               ]);
         
-                $role = new Role();
-                $role->display_name = $request->display_name;
-                $role->name = $request->name;
-                $role->description = $request->description;
-                $role->save();
+            $role = new Role();
+            $role->display_name = $request->display_name;
+            $role->name = $request->name;
+            $role->description = $request->description;
+            $role->save();
         
-                if ($request->permission) {
-                    $role->syncPermissions($request->permission);
-                }
-                toast('Successfully created the new '. $role->display_name . ' role in the database!', 'success', 'top-right')->autoClose(5000);
-                return redirect()->route('roles.index');
-        }else{
+            if ($request->permission) {
+                $role->syncPermissions($request->permission);
+            }
+            toast('Successfully created the new '. $role->display_name . ' role in the database!', 'success', 'top-right')->autoClose(5000);
+            return redirect()->route('roles.index');
+        } else {
             return redirect()->back();
-        }  
+        }
     }
 
     /**
@@ -130,8 +146,9 @@ class RoleController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id) {
-        if(auth()->user()->can(!empty($this->user_permission[3]))){
+    public function show($id)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[3]))) {
             $show = Role::where('id', $id)->first();
             if ($show) {
                 $show = Role::where('id', $id)->with('permissions', 'users')->first();
@@ -139,10 +156,9 @@ class RoleController extends Controller {
             } else {
                 return redirect()->route('roles.index');
             }
-        }else{
+        } else {
             return redirect()->back();
-        }  
-       
+        }
     }
 
     /**
@@ -151,8 +167,9 @@ class RoleController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id) {
-        if(auth()->user()->can(!empty($this->user_permission[4]))){
+    public function edit($id)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[4]))) {
             $role = Role::where('id', $id)->first();
             if ($role) {
                 $edit = Role::where('id', $id)->with('permissions')->first();
@@ -163,10 +180,9 @@ class RoleController extends Controller {
             } else {
                 return redirect()->route('roles.index');
             }
-        }else{
+        } else {
             return redirect()->back();
-        }   
-        
+        }
     }
 
     /**
@@ -176,27 +192,27 @@ class RoleController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) {
-        if(auth()->user()->can(!empty($this->user_permission[4]))){
+    public function update(Request $request, $id)
+    {
+        if (auth()->user()->can(!empty($this->user_permission[4]))) {
             $this->validateWith([
                 'display_name' => 'required|max:255',
                 'description' => 'sometimes|max:255'
               ]);
         
-                $role = Role::findOrFail($id);
-                $role->display_name = $request->display_name;
-                $role->description = $request->description;
-                $role->save();
+            $role = Role::findOrFail($id);
+            $role->display_name = $request->display_name;
+            $role->description = $request->description;
+            $role->save();
         
-                if ($request->permission) {
-                    $role->syncPermissions($request->permission);
-                }
-                toast('Successfully update the '. $role->display_name . ' role in the database.', 'success', 'top-right')->autoClose(5000);
-                return redirect()->route('roles.show', $id);
-        }else{
+            if ($request->permission) {
+                $role->syncPermissions($request->permission);
+            }
+            toast('Successfully update the '. $role->display_name . ' role in the database.', 'success', 'top-right')->autoClose(5000);
+            return redirect()->route('roles.show', $id);
+        } else {
             return redirect()->back();
-        }   
-        
+        }
     }
 
     /**
@@ -205,18 +221,19 @@ class RoleController extends Controller {
      * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $destroy = Role::where('id', $id)->first();
-        if($destroy){
+        if ($destroy) {
             $destroy->delete();
             return redirect()->route('roles.index');
         }
     }
-     /**
-     * store database table name which you can permission give
-     * @param init $id
-     * @return Illuminate\Http\Request  $request
-     */
+    /**
+    * store database table name which you can permission give
+    * @param init $id
+    * @return Illuminate\Http\Request  $request
+    */
     public function showPermission(Request $request)
     {
         $request->validate([
@@ -232,12 +249,11 @@ class RoleController extends Controller {
                 't_name' => $request->per_table
             ]);
             toast('Table Name Inserted Successfully Complated!', 'success', 'top-right')->autoClose(5000);
-                if($request->edit_role != ''){
-                    return redirect()->route('roles.edit',$request->edit_role);
-                }else{
-                    return redirect()->route('roles.create');
-                }  
+            if ($request->edit_role != '') {
+                return redirect()->route('roles.edit', $request->edit_role);
+            } else {
+                return redirect()->route('roles.create');
+            }
         }
     }
-
 }
