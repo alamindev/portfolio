@@ -100,7 +100,7 @@ export default {
   color: #f50057;
   text-align: center;
   font-family: "Black Ops One", cursive;
-  padding-bottom: 30px;
+  padding-bottom: 15px;
   text-shadow: 1px 2px 8px #000;
 }
 /* Glitch Animations */
@@ -298,7 +298,7 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
-  padding-top: 30px;
+  padding-top: 20px;
 }
 .trapdoor {
   -webkit-transform: translateZ(0px);

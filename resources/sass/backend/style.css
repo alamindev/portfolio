@@ -418,6 +418,11 @@ body.fixed-left .side-menu.left {
     -webkit-transform: rotate(90deg);
     -o-transform: rotate(90deg);
     transform: rotate(90deg); }
+  #sidebar-menu ul li a.subdrops .menu-arrow {
+    -ms-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    transform: rotate(90deg); }
   #sidebar-menu ul ul {
     display: none; }
     #sidebar-menu ul ul li {
@@ -442,7 +447,7 @@ body.fixed-left .side-menu.left {
   #sidebar-menu .label {
     margin-top: 2px; }
   #sidebar-menu .subdrop {
-    color: #2b3d51 !important; }
+    color: #2b3d51 ; }
   #sidebar-menu .has_sub ul .has_sub .menu-arrow {
     top: 10px !important; }
 

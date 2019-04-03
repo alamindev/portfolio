@@ -2,6 +2,9 @@
 use App\Model\Admin\Admin;
 use App\Model\Admin\Role;
 use App\Model\Admin\Permission;
+use App\Model\Admin\SubPortfolio;
+use App\Model\Admin\Social;
+use App\Model\Admin\UserContact;
 
 // Home
 Breadcrumbs::register('dashboard', function ($breadcrumbs) {
@@ -80,12 +83,18 @@ Breadcrumbs::register('generals.index', function ($breadcrumbs) {
       $breadcrumbs->parent('generals.index');
       $breadcrumbs->push("update-generals-information", route('generals.edit', $general->id));
   });
-//start coding for portfolio index
+/*
+start coding for portfolio index
+*/
 Breadcrumbs::register('portfolios.index', function ($breadcrumbs) {
     $breadcrumbs->parent('dashboard');
     $breadcrumbs->push('all portfolio', route('portfolios.index'));
 });
-// for portfolio details
+
+/*
+for portfolio details
+
+*/
 Breadcrumbs::register('sub_portfolios.index', function ($breadcrumbs) {
     $breadcrumbs->parent('dashboard');
     $breadcrumbs->push('All-sub_portfolios', route('sub_portfolios.index'));
@@ -95,12 +104,48 @@ Breadcrumbs::register('sub_portfolios.create', function ($breadcrumbs) {
     $breadcrumbs->push('Create-new-user', route('sub_portfolios.create'));
 });
 Breadcrumbs::register('sub_portfolios.show', function ($breadcrumbs, $id) {
-    $sub_portfolios = Permission::findOrFail($id);
+    $sub_portfolios = SubPortfolio::findOrFail($id);
     $breadcrumbs->parent('sub_portfolios.index');
     $breadcrumbs->push("view" . '-' . $sub_portfolios->name, route('sub_portfolios.show', $sub_portfolios->id));
 });
 Breadcrumbs::register('sub_portfolios.edit', function ($breadcrumbs, $id) {
-    $sub_portfolios = Permission::findOrFail($id);
+    $sub_portfolios = SubPortfolio::findOrFail($id);
     $breadcrumbs->parent('sub_portfolios.index');
     $breadcrumbs->push("edit" . '-' . $sub_portfolios->name, route('sub_portfolios.edit', $sub_portfolios->id));
 });
+ 
+/*
+BreadCrumbs for social icon
+
+*/
+Breadcrumbs::register('social-icon.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('dashboard');
+    $breadcrumbs->push('All-social-icon', route('social-icon.index'));
+});
+Breadcrumbs::register('social-icon.create', function ($breadcrumbs) {
+    $breadcrumbs->parent('social-icon.index');
+    $breadcrumbs->push('Create-new-user', route('social-icon.create'));
+});
+Breadcrumbs::register('social-icon.show', function ($breadcrumbs, $id) {
+    $socia = Social::findOrFail($id);
+    $breadcrumbs->parent('social-icon.index');
+    $breadcrumbs->push("view" . '-' . $socia->name, route('social-icon.show', $socia->id));
+});
+Breadcrumbs::register('social-icon.edit', function ($breadcrumbs, $id) {
+    $social= Social::findOrFail($id);
+    $breadcrumbs->parent('social-icon.index');
+    $breadcrumbs->push("edit" . '-' . $social->name, route('social-icon.edit', $social->id));
+});
+/*
+BreadCrumbs for User contact
+
+*/
+Breadcrumbs::register('user-contact.index', function ($breadcrumbs) {
+    $breadcrumbs->parent('dashboard');
+    $breadcrumbs->push('All-user-contact', route('user-contact.index'));
+}); 
+Breadcrumbs::register('user-contact.show', function ($breadcrumbs, $id) {
+    $userContact = UserContact::findOrFail($id);
+    $breadcrumbs->parent('user-contact.index');
+    $breadcrumbs->push("view" . '-' . $userContact->name, route('user-contact.show', $userContact->id));
+}); 

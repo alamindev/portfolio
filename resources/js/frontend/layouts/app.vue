@@ -1,21 +1,40 @@
 <template>
   <v-app id="inspire">
-    <navs/>
+    <navs :getLogo="{logo: items.logo, mainText: items.main_text }"></navs> 
     <v-content>
       <v-container fluid grid-list-md>
         <transition name="fade" mode="out-in">
           <router-view></router-view>
         </transition>
-      </v-container>
+      </v-container> 
     </v-content>
+    <footers :getFooter="items.copy_right"></footers>
   </v-app>
 </template>
 
 <script>
 import navs from "../layouts/nav.vue";
+import footers from "../layouts/footer.vue";
 export default {
   components: {
-    navs
+    navs,footers
+  },
+  data(){
+    return{
+      items: {},
+    }
+  },
+  methods: {
+      getItems(){
+          let vm = this;
+              let url = '/api/header-footer/';
+              axios.get(url).then(res=>{
+                this.items = res.data;  
+              });
+      }
+  },
+  created(){
+    this.getItems()
   }
 };
 </script>

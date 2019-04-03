@@ -80,5 +80,10 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/sub-portfolios/update/{id}', 'Admin\SubPortfolioController@update')->name('sub_portfolios.update');
     Route::get('portfolios/all', 'Admin\PortfolioController@getView')->name('portfolio');
     Route::resource('portfolios', 'Admin\PortfolioController');
+    Route::get('/social-icon/getdata', 'Admin\SocialIconController@getSocialData')->name('getSocialData');
+    Route::resource('social-icon', 'Admin\SocialIconController');
+    Route::get('/user-contact/getdata', 'Admin\UserContactController@getContactData')->name('getContactData');
+    Route::post('user-contact/store-data', 'Admin\UserContactController@store');
+    Route::resource('user-contact', 'Admin\UserContactController');
 });
 Route::get('/logout', 'Auth\LoginController@logout')->name('logout');

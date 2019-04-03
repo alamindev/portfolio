@@ -59,7 +59,13 @@
     echo ckeditorjs();  
 @endphp
     <script src="{{ asset('backend/js/jquery.checkboxes-1.2.0.min.js') }}"></script>
-    <script> 
+    <script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+          new_password: 'keep',
+        }
+    });
         $(function () {
              CKEDITOR.replace('port_details');  
             $('#checkall').on('click', function (e) {

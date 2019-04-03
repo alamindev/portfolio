@@ -11,8 +11,9 @@ window.Vue = require('vue');
 import Vuetify from 'vuetify'
 Vue.use(Vuetify)
 import 'vuetify/dist/vuetify.min.css'
-
-Vue.component('app-default', require('./layouts/app.vue').default);
+import VAnimateCss from 'v-animate-css';
+Vue.use(VAnimateCss);
+Vue.component('app-default', require('./layouts/app.vue').default); 
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);

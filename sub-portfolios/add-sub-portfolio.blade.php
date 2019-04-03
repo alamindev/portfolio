@@ -62,7 +62,34 @@ echo select2css();
     echo ckeditorjs(); 
     echo select2js(); 
 @endphp
-<script> 
+<script>
+var app = new Vue({
+  el: '#app', 
+  data:{ 
+      items: [],
+      itemForm: false,
+      main_texts: '',
+  },
+  computed:{
+    animateText(){
+      return this.items;
+    }
+  },
+  methods: {
+    AddNewItem(){
+      this.itemForm = true; 
+    },
+    SaveItem(){
+      this.items.push(this.main_texts);
+      this.main_texts = '';
+      this.itemForm = false;
+    },
+    removeItem(index){ 
+      this.$delete(this.items, index);
+    }
+  },
+}); 
+
   $(document).ready(function(){
     CKEDITOR.replace('port_details');  
     $('#select2').select2(); 

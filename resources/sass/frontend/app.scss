@@ -1,2 +1,8 @@
 //  vuetify
 @import '~vuetify/dist/vuetify.min.css';
+
+.vue-scroll{
+    position: relative; 
+    width: 100%;
+    height: 85vh;  
+}

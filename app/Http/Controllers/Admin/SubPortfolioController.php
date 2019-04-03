@@ -107,7 +107,7 @@ class SubPortfolioController extends Controller
             $portfolios = Portfolio::select('id', 'portfolio_name')->latest()->get();
             return view('backend.sub-portfolios.add-sub-portfolio', compact('portfolios'));
         } else {
-            return redirect()->back();
+            return redirect(route('sub_portfolios.index'));
         }
     }
 
@@ -119,23 +119,27 @@ class SubPortfolioController extends Controller
     */
     public function store(Request $request)
     {
-        $this->validate($request, [
+        if (auth()->user()->can(!empty($this->user_permission[0]))) {
+            $this->validate($request, [
             'portfolio' => 'required',
             'port_name' => 'required',
             'port_link' => 'required',
             'port_photo' => 'required',
         ]);
 
-        $photo = Upload_Image($request, 'port_photo', 'uploads/portfolio/');
-        $portfolio = new SubPortfolio();
-        $portfolio->portfolio_id = $request->portfolio;
-        $portfolio->sub_port_name = $request->port_name;
-        $portfolio->sub_port_link = $request->port_link;
-        $portfolio->sub_port_details = $request->port_details;
-        $portfolio->sub_port_photo = $photo;
-        $portfolio->save();
-        toast('Successfully created Portfolio', 'success', 'top-right')->autoClose(5000);
-        return redirect()->route('sub_portfolios.index');
+            $photo = Upload_Image($request, 'port_photo', 'uploads/portfolio/');
+            $portfolio = new SubPortfolio();
+            $portfolio->portfolio_id = $request->portfolio;
+            $portfolio->sub_port_name = $request->port_name;
+            $portfolio->sub_port_link = $request->port_link;
+            $portfolio->sub_port_details = $request->port_details;
+            $portfolio->sub_port_photo = $photo;
+            $portfolio->save();
+            toast('Successfully created Portfolio', 'success', 'top-right')->autoClose(5000);
+            return redirect()->route('sub_portfolios.index');
+        } else {
+            return redirect(route('sub_portfolios.index'));
+        }
     }
 
     /**

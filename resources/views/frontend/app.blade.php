@@ -15,6 +15,7 @@
     <link rel="dns-prefetch" href="//fonts.gstatic.com"> 
     <link href="https://fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Black+Ops+One|Chewy" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
     <!-- Styles -->
     <link href="{{ asset('frontend/css/app.css') }}" rel="stylesheet"> 
         @if(!empty($general->fav_icon))

@@ -156,8 +156,12 @@ $(document).ready(function () {
   rangeSlider();
 }); // for custom nav
 
-$('.is-active > .list-unstyled').css('display', 'block !important');
-$('.is-active .waves-effect.active').addClass('subdrop');
+$('.is-active .list-unstyled').addClass('is-down');
+$('.is-active .waves-effect').addClass('subdrops');
+$('.is-active .waves-effect').on('click', function () {
+  $(this).removeClass('subdrops');
+  $('.is-active .list-unstyled').removeClass('is-down');
+});
 
 /***/ }),
 

@@ -145,6 +145,9 @@
     width: 5px;
     height: 100%;
 }
+.is-down{
+    display: block !important; 
+}
 .is-active > .list-unstyled li.is-active a.is-active {
     background: rgb(231, 231, 231);
     color: rgb(54, 54, 54) !important;
@@ -159,7 +162,17 @@
     width: 5px;
     height: 100%;
 }
- 
+ .is-active >  .waves-effect {
+    color: #ffffff !important;
+    background-color: #64b0f2;
+}
+#sidebar-menu > ul > li > a:hover {
+    color: #fff !important;
+    background: #2b3d51;
+} 
+.is-active > a{
+    color: #fff !important;
+}
 @media only screen and (min-width: 991px) {
     .has_sub>.list-unstyled li a:hover {
         background: rgb(63, 86, 110);

@@ -19,6 +19,11 @@ function Help_all_input_normal($id = null, $type = null, $name = null, $value = 
     } else {
         $autofocus = '';
     }
+    if ($step == 'true') {
+        $step = 'step="' . $step . '"';
+    } else {
+        $step = '';
+    }
     if ($max != null) {
         $max = 'max="' . $max . '"';
     } else {
@@ -108,7 +113,7 @@ function Help_all_input_normal($id = null, $type = null, $name = null, $value = 
     } else {
         ?>
 
-    <input <?php echo $confirm ?> type="<?php echo $type ?>" id="<?php echo $id ?>" name="<?php echo $name ?>" <?php echo $placeholder ?> <?php echo $val ?> class="form-control" <?php echo $required ?> <?php echo $max ?> <?php echo $min ?> <?php echo $maxlength ?> <?php echo $minlength ?> <?php echo $autocomplete ?> <?php echo $autofocus ?> <?php echo $data_persely ?> <?php echo $attr ?>>
+    <input <?php echo $confirm ?> type="<?php echo $type ?>" id="<?php echo $id ?>" name="<?php echo $name ?>" <?php echo $placeholder ?> <?php echo $val ?> class="form-control" <?php echo $required ?> <?php echo $step ?> <?php echo $max ?> <?php echo $min ?> <?php echo $maxlength ?> <?php echo $minlength ?> <?php echo $autocomplete ?> <?php echo $autofocus ?> <?php echo $data_persely ?> <?php echo $attr ?>>
 
     <?php
     }
@@ -176,6 +181,20 @@ function home_base_url($data)
         $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
     $base_url .= $_SERVER['HTTP_HOST'] . '/' . $data;
     return $base_url;
+}
+/*
+* for select 2 Js
+*/
+function colorPickerjs()
+{
+    return '<script src="' . home_base_url('backend/plugins/mjolnic-bootstrap-colorpicker/js/bootstrap-colorpicker.min.js') . '" defer></script>';
+}
+/*
+* for select 2 css
+*/
+function colorPickercss()
+{
+    return '<link rel="stylesheet" href="' . home_base_url("backend/plugins/mjolnic-bootstrap-colorpicker/css/bootstrap-colorpicker.min.css") . '">';
 }
 /*
 * for select 2 Js
@@ -305,3 +324,44 @@ function Update_Upload_Image($request, $name, $model, $path, $width = null, $hei
     }
     return $fileName;
 }
+/*
+* FUNCTION NAME: Senitize Icon
+* for replace fontawesome full icon to icon class
+* return request class name
+* return @values
+*/
+function senitizeIconData($data)
+{
+    $doubleCode = strpos($data, '"');
+    $singleCode = strpos($data, "'");
+    $doubleCodeHtml = strpos($data, '&quot');
+    $singleCodeHtml = strpos($data, '&apos');
+
+    if ($doubleCode !== false) {
+        $data = str_replace('\\"', '"', $data);
+        $data = str_replace('\"', '"', $data);
+        $data = explode('"', $data);
+        return $data[1];
+    } elseif ($singleCode !== false) {
+        $data = str_replace('\\"', "'", $data);
+        $data = str_replace('\"', "'", $data);
+        $data = explode("'", $data);
+        return $data[1];
+    } elseif ($doubleCodeHtml !== false) {
+        $data = str_replace('\\&quot', '"', $data);
+        $data = str_replace('\&quot', '"', $data);
+        $data = str_replace('\&quot', '"', $data);
+        $data = explode('"', $data);
+        return $data[1];
+    } elseif ($singleCodeHtml !== false) {
+        $data = str_replace('\\&apos', "'", $data);
+        $data = str_replace('\&apos', "'", $data);
+        $data = str_replace('\&apos', "'", $data);
+        $data = explode("'", $data);
+        return $data[1];
+    } else {
+        $data = $data;
+    }
+    return $data; 
+}
+

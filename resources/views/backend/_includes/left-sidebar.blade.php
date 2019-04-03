@@ -36,6 +36,11 @@
                        <a href="{{ route('generals.index') }}" class="waves-effect"><i class="fas fa-wrench"></i><span> General Setting </span> </a>
                     </li>
                     @endpermission
+                    @permission('index-socials')
+                    <li class="has_sub {{ Nav::isResource('social-icon') }}">
+                       <a href="{{ route('social-icon.index') }}" class="waves-effect"><i class="fab fa-cuttlefish"></i><span> Social </span> </a>
+                    </li>
+                    @endpermission
                     @permission('index-portfolios') 
                      <li class="has_sub {{ Nav::hasSegment(['portfolios','sub-portfolios'],2,'is-active') }}">
                         <a href="javascript:void(0);" class="waves-effect"><i class="zmdi zmdi-album"></i> <span> portfolios </span> <span class="menu-arrow"></span></a>

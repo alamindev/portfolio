@@ -1,54 +1,105 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 sm2 style="z-index: 999;">
-      <div class="list">
+    <v-flex xs12 sm2 style="padding-top: 22px;">
+      <div class="list" v-animate-css="'slideInLeft'">
         <ul class="list-main">
           <li>
-            <a href="#" class="isActive">new move</a>
-          </li>
-          <li>
-            <a href="#">development</a>
-          </li>
+            <a href="#" class="all_item"  @click.prevent="allItem" :class="allItemActive">All Item</a>
+          </li> 
+          <li v-for="category in PortCategory" :key="category.id">
+            <a href="#" @click.prevent="getItemById(category.id)" :class="ActiveIfRight(category.id)">{{ category.portfolio_name }}</a>
+          </li> 
         </ul>
       </div>
     </v-flex>
-    <v-flex xs12 sm10 style="z-index: 999;">
+    <v-flex xs12 sm10 style="z-index: 999;" >
       <VuePerfectScrollbar class="portfolio-main" :settings="settings">
         <div class="portfolio-item">
-          <v-layout row wrap>
-            <v-flex xs12 sm4>
-              <v-card>
+          <v-layout row wrap v-if="allPort" >
+            <v-flex xs12 sm4 v-for="item in AllItem" v-bind:key="item.id" style="padding: 12px" >
+              <v-card v-animate-css="'flipInX'">
                 <div class="main-img">
                   <div class="overlay-img">
                     <div class="custom-btn">
-                      <v-btn color="light" dark @click.stop="dialog = true">Show More</v-btn>
+                      <v-btn color="light" dark @click.prevent="ShowDetails(item.id)" >Show More</v-btn>
                     </div>
-                    <v-img
-                      src="https://cdn.vuetifyjs.com/images/cards/desert.jpg"
-                      aspect-ratio="1.5"
-                    ></v-img>
+                   <v-img v-if="item.sub_port_photo"
+                    :src="`/uploads/portfolio/${item.sub_port_photo}`"
+                    :lazy-src="`/uploads/portfolio/${item.sub_port_photo}`"
+                    aspect-ratio="1.5"
+                    class="grey lighten-2"
+                  ></v-img>
                   </div>
                   <div class="title">
-                    <h4 class="headline mb-0">Kangaroo Valley Safari</h4>
+                    <h4 class="headline mb-0">{{ item.sub_port_name }}</h4>
                   </div>
                 </div>
-              </v-card>
-            </v-flex>
+              </v-card> 
+            </v-flex> 
+          </v-layout>
+          <v-layout row wrap v-if="allPort == false">
+            <v-flex xs12 sm4 v-for="itemid in ItemById" v-bind:key="itemid.id" style="padding: 12px" >
+              <v-card  v-animate-css="'flipInY'">
+                <div class="main-img">
+                  <div class="overlay-img">
+                    <div class="custom-btn">
+                      <v-btn color="light" dark @click.prevent="ShowDetails(itemid.id)" >Show More</v-btn>
+                    </div>
+                   <v-img v-if="itemid.sub_port_photo"
+                    :src="`/uploads/portfolio/${itemid.sub_port_photo}`"
+                    :lazy-src="`/uploads/portfolio/${itemid.sub_port_photo}`"
+                    aspect-ratio="1.5"
+                    class="grey lighten-2"
+                  ></v-img>
+                  </div>
+                  <div class="title">
+                    <h4 class="headline mb-0">{{ itemid.sub_port_name }}</h4>
+                  </div>
+                </div>
+              </v-card> 
+            </v-flex> 
           </v-layout>
         </div>
-      </VuePerfectScrollbar>
-      <v-layout row justify-center>
+      </VuePerfectScrollbar> 
+      <v-layout row justify-center >
         <v-dialog v-model="dialog" max-width="800">
           <v-card>
-            <v-card-text>Let Google help apps determine location. This means sending anonymous location data to Google, even when no apps are running.</v-card-text>
+            <v-img v-if="showDetail.sub_port_photo"
+                    :src="`/uploads/portfolio/${showDetail.sub_port_photo}`"
+                    :lazy-src="`/uploads/portfolio/${showDetail.sub_port_photo}`"
+                    aspect-ratio="3"
+                    class="grey lighten-2"
+                  >
+                  <v-container fill-height fluid>
+                    <v-layout fill-height>
+                      <v-flex xs12 align-end flexbox>
+                        <span class="headline category-portfolio" >{{ showCategoryDetails.portfolio_name}}</span>
+                      </v-flex>
+                    </v-layout>
+                  </v-container>
+                  </v-img>
+              <v-card-text>  
+                <div class="goto_link">
+                    <a :href="showDetail.sub_port_link" target="_blank">Goto Live</a> 
+                </div>
+                  <v-card-title primary-title> 
+                      <div>
+                        <h2 class="headline mb-2">{{ showDetail.sub_port_name }}</h2>
+                        <div v-html=" showDetail.sub_port_details ">   </div>
+                      </div>
+                    </v-card-title>
+              </v-card-text>
+             <v-card-actions style="display: flex; justify-content: flex-end">
+              <v-btn flat color="red" @click.stop="dialog = false">close</v-btn> 
+            </v-card-actions>
           </v-card>
         </v-dialog>
-      </v-layout>
+      </v-layout> 
     </v-flex>
   </v-layout>
 </template>
 
-<script>
+<script> 
 import VuePerfectScrollbar from "vue-perfect-scrollbar";
 export default {
   components: {
@@ -59,48 +110,159 @@ export default {
       dialog: false,
       settings: {
         maxScrollbarLength: 95
-      }
+      },
+      PortCategory: [], // for api/category route 
+      allItemActive: false,
+      AllItem: [],
+      ItemById: [],
+      itemIdForActive:{},
+      allPort: true,  
+      showDetail: false,
+      showCategoryDetails: {}
     };
+  },
+  methods: {
+    /*
+    * @route api/categtory
+    * return  portfolio category
+    */
+     getCategory(){ 
+        let vm = this;
+        let url = '/api/category';
+        axios.get(url).then(res=>{
+           vm.PortCategory = res.data; 
+        })
+      },
+      allItem(){
+        this.$Progress.start()  
+        let vm = this;
+        let url = '/api/all-portfolio';
+        axios.get(url).then(res=>{
+           this.AllItem = res.data; 
+           this.allItemActive = 'active';
+            this.allPort = true; 
+            this.$Progress.finish(); 
+        })
+      },
+      getItemById(id){ 
+        let vm = this;
+        let url = '/api/portfolio/' + id;
+        axios.get(url).then(res=>{
+          this.ItemById = res.data.sub_portfolios; 
+          this.itemIdForActive = res.data.id;
+          this.allPort = false; 
+          this.allItemActive = false;  
+        });
+      },
+      ActiveIfRight(id){
+         if(this.allItemActive == false){
+         if(id === this.itemIdForActive){
+           return 'is-active';
+         }}
+      },
+       ShowDetails(id){
+        this.$Progress.start()  
+            let vm = this;
+            let url = '/api/sub-portfolio/' + id;
+            axios.get(url).then(res=>{
+              this.showDetail = res.data;
+              this.showCategoryDetails = res.data.portfolios;
+              this.dialog = true; 
+              this.$Progress.finish(); 
+            });
+      }
   },
   created() {
     document.title = "Al-amin - portfolio";
+    this.getCategory();
+    this.allItem();
   }
 };
 </script>
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css?family=Lobster");
+.category-portfolio {
+	background: #4b73ff none repeat scroll 0% 0%;
+	padding: 5px 50px;
+	color: white;
+	box-shadow: 0px 9px 13px 0px #5653cf;
+	display: inline-block;
+	border-radius: 0px 86px 5px 0px;
+}
+.goto_link{
+  width: 100%;
+  text-align: right;
+  a{
+	background: #fb435d;
+	color: #fff;
+	padding: 10px 35px;
+	text-decoration: none;
+	font-size: 16px;
+	text-transform: uppercase;
+	font-weight: bold;
+	box-shadow: 0 8px 14px -3px #ff7373;
+  border-radius: 20px 0px 20px 1px;
+  &:hover{
+    background: rgb(255, 41, 25);
+    color: #fff;
+  }
+  }
+}
 .list {
   padding: 10px;
   background: #fff;
   box-shadow: 5px 11px 26px -3px #d6d6d642;
-  height: 100vh;
+  height: 85vh;
   .list-main {
     list-style-type: none;
     margin: 0;
     padding: 0;
+    .all_item{
+      background: #3399ff;
+      color: white;
+      &:hover{
+        background: rgb(46, 112, 255) !important;
+        color: white !important;
+      }
+    }
+    .is-active{
+      background: #0081ff;
+      color: white;
+      &:hover{
+        background: rgb(46, 112, 255);
+        box-shadow: 0px 9px 14px -6px #307df1;
+      }
+    }
     li {
+      border-bottom: 1px solid #efefef;
+      &:last-child{
+        border-bottom: none;
+      }
       a {
         text-decoration: none;
         display: block;
         padding: 10px 20px;
         font-size: 16px;
         color: #000;
-        &:hover {
-          background: rgb(255, 255, 255);
-          color: rgb(39, 39, 39);
-          box-shadow: 0px 8px 15px -4px rgb(211, 211, 211);
+        &:not(.is-active){
+          &:hover {
+                background: rgb(255, 255, 255);
+                color: rgb(39, 39, 39);
+                box-shadow: 0px 8px 15px -4px rgb(211, 211, 211);
+              }
         }
+        
       }
     }
   }
 }
 .portfolio-main {
   position: relative;
-  margin: auto;
+  margin-top: 20px;
   width: 100%;
-  height: 100vh;
-  padding-top: 8px;
-  padding-right: 8px;
+  height: 85vh;  
+    padding-right: 20px;
+    padding-left: 15px;
   .portfolio-item {
     .main-img {
       padding: 10px;

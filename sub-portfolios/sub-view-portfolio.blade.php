@@ -46,7 +46,7 @@ View portfolio Information Details
                 </table>
             </div>
             <div class="card-footer">
-                <a href="{{ route('sub_portfolios.edit',$show->id) }}" class="btn btn-outline-primary waves-effect waves-light">Update Porfolio</a>
+                <a href="{{ route('sub_portfolios.edit',$show->id) }}" class="btn btn-outline-primary waves-effect waves-light">Update your profile</a>
             </div>
         </div>
     </div>

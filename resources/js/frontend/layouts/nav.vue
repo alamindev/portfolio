@@ -1,6 +1,9 @@
 <template>
   <v-toolbar>
-    <v-toolbar-title></v-toolbar-title>
+    <v-toolbar-title> 
+      <img  v-if="getLogo.logo" :src="`/uploads/generals/${getLogo.logo}`"  :alt=" getLogo.mainText">
+      <h4 v-if="!getLogo.logo">{{ getLogo.mainText }}</h4>
+    </v-toolbar-title>
     <v-spacer></v-spacer>
     <v-toolbar-items class="hidden-sm-and-down">
       <v-btn
@@ -29,11 +32,15 @@
 <script>
 export default {
   name: "navs",
+  props: {
+    getLogo: Object
+  },
   data() {
     return {
       menu: [
         { icon: "home", title: "Home", link: "/home" },
-        { icon: "portfolio", title: "Portfolio", link: "/home/portfolio" }
+        { icon: "portfolio", title: "Portfolio", link: "/home/portfolio" },
+        { icon: "contact", title: "Contact", link: "/home/contact" }
       ]
     };
   },

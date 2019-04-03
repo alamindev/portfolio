@@ -127,8 +127,7 @@ Portfolio Category Information
             this.errors= false;
           this.showModal = '';
           this.displayModal = 'display: block; opacity: 0; visibility: hidden';
-            this.success = res.data.message;  
-            console.log(res.data.message)
+            this.success = res.data.message;   
             this.fetchData();
               var v = this;
               setTimeout(function () {
@@ -136,6 +135,7 @@ Portfolio Category Information
                }, 3000);
           }).catch(error => {
               this.errors = error.response.data.errors 
+               
           });
         },
          //fetch data query
