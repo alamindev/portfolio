@@ -40,7 +40,8 @@ export default {
       menu: [
         { icon: "home", title: "Home", link: "/home" },
         { icon: "portfolio", title: "Portfolio", link: "/home/portfolio" },
-        { icon: "contact", title: "Contact", link: "/home/contact" }
+        { icon: "about", title: "About Me", link: "/home/about" },
+        { icon: "contact", title: "Contact", link: "/home/contact" },
       ]
     };
   },

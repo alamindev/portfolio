@@ -28,6 +28,7 @@
         "particles.js": "^2.0.0",
         "v-animate-css": "0.0.3",
         "vue-avatar-editor": "^1.0.4",
+        "vue-mouse-parallax": "^0.9.2",
         "vue-perfect-scrollbar": "^0.1.0",
         "vue-progressbar": "^0.7.5",
         "vue-router": "^3.0.2",

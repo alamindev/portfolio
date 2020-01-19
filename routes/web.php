@@ -15,8 +15,8 @@
 Auth::routes();
 Route::get('/home/text', 'HomeController@GetHomeText')->name('home.text');
 
-Route::get('home/{vue?}/', 'HomeController@index')->where('vue', '([A-z\d-\/_.]+)?')->name('home');
-
+Route::get('/home/{vue?}/', 'HomeController@index')->where('vue', '([A-z\d\/]+?)')->name('home');
+// Route::get('{all?}', )->where('all', '([A-z\d\/]+?)');
 // route for dashboard  adminpanel
 Route::redirect('/admin', '/admin/dashboard');
 Route::redirect('/', '/home');

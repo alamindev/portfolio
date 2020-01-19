@@ -13,7 +13,10 @@ Vue.use(Vuetify)
 import 'vuetify/dist/vuetify.min.css'
 import VAnimateCss from 'v-animate-css';
 Vue.use(VAnimateCss);
-Vue.component('app-default', require('./layouts/app.vue').default); 
+Vue.component('app-default', require('./layouts/app.vue').default);
+import VueMouseParallax from 'vue-mouse-parallax'
+
+Vue.use(VueMouseParallax)
 
 import VueRouter from 'vue-router';
 Vue.use(VueRouter);

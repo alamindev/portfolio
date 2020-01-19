@@ -44,7 +44,15 @@ export default {
     overflow: hidden;
   }
 }
-
+@media only screen and (max-width: 600px) {
+ .v-content__wrap{
+   margin-bottom: 65px;
+ }
+}
+.v-content__wrap{
+  display: flex;
+  align-items: center;
+} 
 .v-toolbar {
   z-index: 999;
   background: #fff !important;

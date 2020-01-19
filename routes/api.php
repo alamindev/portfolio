@@ -25,3 +25,4 @@ Route::get('/sub-portfolio/{id}', 'Api\ShowPortfolioController@SubPorfoliById')-
 for get header logo and footer text
 */
 Route::get('/header-footer', 'HomeController@getHeaderFooter')->name('headerfooter');
+Route::get('/footer', 'HomeController@getfooter')->name('footer');

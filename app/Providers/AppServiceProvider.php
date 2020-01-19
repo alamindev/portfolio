@@ -15,6 +15,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        If (env('APP_ENV') !== 'local') {
+            \URL::forceScheme('https');
+            $this->app['request']->server->set('HTTPS', true);
+        }
+        
         Schema::defaultStringLength(191);
         View::composer(['frontend.app', 'backend.layouts.app'], function ($view) {
             $general = General::select('fav_icon','copy_right')->first();

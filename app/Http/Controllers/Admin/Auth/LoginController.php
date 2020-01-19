@@ -7,6 +7,8 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\URL;
 
 class LoginController extends Controller
 {
@@ -89,7 +91,7 @@ class LoginController extends Controller
         $this->validate($request, [
             $this->username() => 'required|string',
             'password' => 'required|string',
-        ],[
+        ], [
             'email.required' => 'Please entered valid email or user name'
         ]);
     }
@@ -103,7 +105,8 @@ class LoginController extends Controller
     protected function attemptLogin(Request $request)
     {
         return $this->guard()->attempt(
-            $this->credentials($request), $request->filled('remember')
+            $this->credentials($request),
+            $request->filled('remember')
         );
     }
 
@@ -131,7 +134,7 @@ class LoginController extends Controller
         $this->clearLoginAttempts($request);
 
         return $this->authenticated($request, $this->guard()->user())
-                ?: redirect()->intended($this->redirectPath());
+            ?: redirect()->intended($this->redirectPath());
     }
 
     /**
@@ -143,7 +146,7 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        //
+        return redirect(session('link'));
     }
 
     /**
@@ -169,9 +172,9 @@ class LoginController extends Controller
     public function username()
     {
         $login = request()->input('email');
-            $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'user_name';
-            request()->merge([$field => $login]);
-            return $field;
+        $field = filter_var($login, FILTER_VALIDATE_EMAIL) ? 'email' : 'user_name';
+        request()->merge([$field => $login]);
+        return $field;
     }
 
 
@@ -180,7 +183,7 @@ class LoginController extends Controller
         return Auth::guard('admin');
     }
 
-        /**
+    /**
      * Log the user out of the application.
      *
      * @param  \Illuminate\Http\Request  $request

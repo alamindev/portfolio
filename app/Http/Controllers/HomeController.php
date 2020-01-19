@@ -6,7 +6,8 @@ use App\Model\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Model\Admin\General;
-
+use App\Model\Admin\Social; 
+use Illuminate\Support\Facades\Cookie;
 class HomeController extends Controller
 {
 
@@ -27,10 +28,21 @@ class HomeController extends Controller
         $general = General::select('logo', 'main_text', 'photo')->first();
         $collect = Collect($general);
         $collections = $collect->merge(['animate_text' => $animate_text_all]);
+        
         return response()->json($collections);
     }
     public function getHeaderFooter()
     {
         return General::select('id', 'logo', 'copy_right', 'main_text')->first();
+    }
+    public function getfooter()
+    { 
+        $social_cookie = Cookie::get('social');
+        if($social_cookie != null){
+            $social =  Cookie::get('social');
+        }else{
+           $social = Social::select('icon','link','background','color','hover_color','hover_background','font_size')->get();
+        } 
+        return response($social)->cookie('social', $social, time() + (86400 * 30));
     }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Model\Admin\Portfolio;
 use App\Model\Admin\SubPortfolio;
+use Illuminate\Support\Facades\Cookie;
 
 class ShowPortfolioController extends Controller
 {
@@ -25,8 +26,13 @@ class ShowPortfolioController extends Controller
     */
     public function allPortfolio()
     {
-        $subport = SubPortfolio::select('id', 'sub_port_photo', 'sub_port_name')->get();
-        return response()->json($subport);
+        $all_portfolio = Cookie::get('all_portfolio');
+        if($all_portfolio != null){
+            $subport =  Cookie::get('all_portfolio');
+        }else{
+            $subport = SubPortfolio::select('id', 'sub_port_photo', 'sub_port_name')->get();
+        } 
+         return response($subport)->cookie('all_portfolio', $subport, time() + (86400 * 30));
     }
     /**
      * start coding for get item by id
